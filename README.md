@@ -22,7 +22,7 @@
 
 - We also use xcb_get_geometry, and xcb_get_geometry_reply to get the width and height information of the screen(s)/display(s).
 
-- Once we have the data, we use libpng to produce a png file.
+- Once we have the data, we use libpng's simplified api to produce a png file.
 
 # Future plans
 
@@ -34,10 +34,18 @@
 
 # How to Build
 
-- Download the XCB library from the official XCB website.
+- Download and install the XCB library from the official XCB website.
 
-- Download the libpng library from the official libpng website.
+- Download and install the libpng library from the official libpng website.
 
 ```
 gcc screenpew.c -lxcb -lpng
 ```
+
+# Important things to note so that we do not get confused later
+
+- row_stride is basically how wide each row is, in the raw image data that we get.
+
+- Read XCB documentation carefully.
+
+- Software from the late 20th century and early 21st century need help with documenting things better. :tired_face:
