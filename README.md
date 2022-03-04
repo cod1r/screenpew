@@ -31,3 +31,13 @@
 - Implement an method for users to specify what file name that is generated.
 
 - Allow for the image data to be put into a clipboard buffer.
+
+# How to Build
+
+- Download the XCB library from the official XCB website.
+
+- Download the libpng library from the official libpng website.
+
+```
+gcc screenpew.c -lxcb -lpng
+```
