@@ -150,38 +150,38 @@ int main() {
 
     xcb_window_t window = xcb_generate_id(connection);
     xcb_create_window(
-      connection, 
-      0, 
-      window, 
-      iter.data->root, 
-      0, 
-      0, 
-      geo_reply->width, 
-      geo_reply->height, 
-      0, 
+      connection,
+      0,
+      window,
+      iter.data->root,
+      0,
+      0,
+      geo_reply->width,
+      geo_reply->height,
+      0,
       XCB_WINDOW_CLASS_INPUT_OUTPUT, 
       iter.data->root_visual,
       0,
       NULL
     );
-    xcb_intern_atom_cookie_t intern_cookie = xcb_intern_atom(connection, 1, strlen("_NET_WM_STATE"), "_NET_WM_STATE");
-    xcb_intern_atom_reply_t *intern_reply = xcb_intern_atom_reply(connection, intern_cookie, NULL);
+    xcb_intern_atom_cookie_t intern_state_cookie = xcb_intern_atom(connection, 1, strlen("_NET_WM_STATE"), "_NET_WM_STATE");
+    xcb_intern_atom_reply_t *intern_state_reply = xcb_intern_atom_reply(connection, intern_state_cookie, NULL);
 
     xcb_intern_atom_cookie_t intern_fullscrn_cookie = xcb_intern_atom(connection, 1, strlen("_NET_WM_STATE_FULLSCREEN"), "_NET_WM_STATE_FULLSCREEN");
     xcb_intern_atom_reply_t *intern_fullscrn_reply = xcb_intern_atom_reply(connection, intern_fullscrn_cookie, NULL);
 
-    int atom[] = {intern_fullscrn_reply->atom};
+    int atom_states[] = {intern_fullscrn_reply->atom};
     // cannot put XCB_ATOM_ANY into change property. WHY!!!!!!
     // there has to be someway to get ATOM TYPE. If not, this is going to be super confusing moving on...
     xcb_change_property(
       connection,
-      XCB_PROP_MODE_REPLACE,
+      XCB_PROP_MODE_APPEND,
       window,
-      intern_reply->atom,
-      XCB_ATOM_INTEGER,
+      intern_state_reply->atom,
+      XCB_ATOM_ATOM,
       32,
       1,
-      atom
+      atom_states
     );
     xcb_change_property (
       connection,

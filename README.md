@@ -24,7 +24,7 @@
 
 2. We then use xcb_get_geometry, and xcb_get_geometry_reply to get the width and height information of the screen(s)/display(s).
 
-3. A fullscreen 'screenpew' window is opened (using EWMH (Extended Window Manager Hints). We set the _NET_WM_STATE atom to have the value of _NET_WM_STATE_FULLSCREEN which is an XCB_ATOM_INTEGER type. The type matters heavily when using xcb_change_property (I don't know why it doesn't work with XCB_ATOM_ANY)), with the root screen(s)/displays(s) image data on it, and the user can click and drag to specify what area of the captured root image data they want to be outputted.
+3. A fullscreen 'screenpew' window is opened (using EWMH (Extended Window Manager Hints). We set the _NET_WM_STATE atom to have the value of _NET_WM_STATE_FULLSCREEN which is an XCB_ATOM_ATOM type. The type matters heavily when using xcb_change_property (I don't know why it doesn't work with XCB_ATOM_ANY)), with the root screen(s)/displays(s) image data on it, and the user can click and drag to specify what area of the captured root image data they want to be outputted.
 
 - Once we have the image data we need, we use libpng's simplified api to produce a png file.
 
@@ -37,7 +37,7 @@
 
 - Allow for the image data to be put into a clipboard buffer.
 
-- Add keybindings to activate when the program starts (when the root screen(s)/display(s) data is grabbed).
+- Implement some indicator on the 'screenpew' fullscreen window so that the user knows screenpew is running.
 
 ## How to Build
 
@@ -57,6 +57,6 @@ gcc screenpew.c -lxcb -lpng
 
 - Software from the late 20th century and early 21st century need help with documenting things better. :tired_face:
 
-- Atom type matters when using xcb_change_property. I do not know why it doesn't work with XCB_ATOM_ANY. The types are specified in the EWMH spec. Ex: the type of _NET_WM_STATE_FULLSCREEN is Atom which is just an integer, and the type of _NET_WM_NAME is a utf8-string.
+- Atom type matters when using xcb_change_property. I do not know why it doesn't work with XCB_ATOM_ANY. The types are specified in the EWMH spec. Ex: the type of _NET_WM_STATE_FULLSCREEN is Atom which is an XCB_ATOM_ATOM type, and the type of _NET_WM_NAME is a utf8-string (XCB_ATOM_STRING).
 
 - I do not know why we have to specify how many 32-bit multiples of data we want to retrieve when using xcb_get_property. Why not just give the entirety of the needed information? This makes me just want to put a big enough number just so I can get all the data. I do not know of a current way to know the data size before hand.
