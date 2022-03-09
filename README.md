@@ -8,7 +8,7 @@
 
 ## Things to consider
 
-- As of right now, the program doesn't account for MSB ( most significant byte ) first ordering or Big Endian ordering. If you still decide to use this, the colors will be messed up.
+- As of right now, the program doesn't account for MSB ( most significant byte ) first ordering or Big Endian ordering. If your machine uses Big Endian ordering and you still decide to use this, the colors will be messed up.
 
 - The file name generated is not customizable. The default name is "screenshot1.png".
 
