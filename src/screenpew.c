@@ -13,18 +13,22 @@ int min(int one, int two) {
   return one < two ? one : two;
 }
 
-void create_png(uint8_t *img_data, xcb_window_t window, int width, int height, int screenN) {
+void create_png(uint8_t *img_data, xcb_window_t window, int width, int height) {
   png_image img;
   img.opaque = NULL;
   img.version = PNG_IMAGE_VERSION;
   img.height = height;
   img.width = width;
   img.format = PNG_FORMAT_BGR | PNG_FORMAT_FLAG_ALPHA;
-  char file_name[50];
-  sprintf(file_name, "screenshot%d.png", screenN);
+  char *home = getenv("HOME");
+  char *file_name = "/Pictures/screenshot.png";
+  int string_len = strlen(home) + strlen(file_name);
+  char *home_plus_file_name = malloc(string_len * sizeof(char));
+  strcpy(home_plus_file_name, home);
+  strcat(home_plus_file_name, file_name);
   png_image_write_to_file(
     &img, 
-    file_name, 
+    home_plus_file_name, 
     0, 
     img_data, 
     4 * width, 
@@ -38,8 +42,7 @@ void get_image(
   int x1,
   int y1,
   int x2,
-  int y2,
-  int screenN
+  int y2
 ) {
   int min_y = min(y1, y2);
   int max_y = max(y1, y2);
@@ -58,7 +61,7 @@ void get_image(
   xcb_get_image_reply_t *img_reply = xcb_get_image_reply(connection, cookie, NULL);
   if (img_reply != NULL && img_reply->length > 0) {
     uint8_t *img_data = xcb_get_image_data(img_reply);
-    create_png(img_data, window, max_x - min_x, max_y - min_y, screenN);
+    create_png(img_data, window, max_x - min_x, max_y - min_y);
   }
   else if (img_reply == NULL) {
     printf("img_reply null\n");
@@ -143,7 +146,6 @@ int main() {
 
   xcb_screen_iterator_t iter = xcb_setup_roots_iterator(setup);
   xcb_window_t root = iter.data->root;
-  int screen_number = 1;
   while (iter.rem != 0) {
     xcb_get_geometry_cookie_t geo_cookie = xcb_get_geometry(connection, iter.data->root);
     xcb_get_geometry_reply_t *geo_reply = xcb_get_geometry_reply(connection, geo_cookie, NULL);
@@ -195,7 +197,6 @@ int main() {
     );
     add_mouse_event(connection, window);
     xcb_map_window(connection, window);
-    screen_number++;
     xcb_screen_next(&iter);
   }
   xcb_flush(connection);
@@ -216,7 +217,7 @@ int main() {
     }
     free(event);
   }
-  get_image(connection, root, press_x, press_y, release_x, release_y, 1);
+  get_image(connection, root, press_x, press_y, release_x, release_y);
   xcb_disconnect(connection);
   return 0;
 }

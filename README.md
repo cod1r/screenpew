@@ -14,7 +14,7 @@
 
 - The image data is not put into any clipboard buffers.
 
-- You cannot specify where the screenshot image file will be generated. It will show up where the executable is ran.
+- You cannot specify where the screenshot image file will be generated. It will show up in the "$HOME/Pictures" directory. You might have to make a "Pictures" directory for the file to be generated.
 
 - At the moment, the fullscreen 'screenpew' window does not make it clear that it is opened up, fullscreen and capturing user input.
 
