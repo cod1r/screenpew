@@ -29,6 +29,7 @@ void create_png(uint8_t *img_data, xcb_window_t window, int width, int height) {
   png_image_write_to_file(
     &img,    home_plus_file_name,    0,    img_data,    4 * width,    NULL
   );
+	free(home_plus_file_name);
 }
 
 void get_image(
@@ -53,12 +54,16 @@ void get_image(
   if (img_reply != NULL && img_reply->length > 0) {
     uint8_t *img_data = xcb_get_image_data(img_reply);
     create_png(img_data, window, max_x - min_x, max_y - min_y);
+		if (img_reply != NULL) {
+			free(img_reply);
+		}
   }
   else if (img_reply == NULL) {
     printf("img_reply null\n");
   }
   else if (img_reply->length == 0) {
     printf("img_reply length is zero\n");
+		free(img_reply);
   }
 }
 
@@ -159,5 +164,8 @@ int main() {
 	);
   get_image(connection, root, trans1->dst_x, trans1->dst_y, trans2->dst_x, trans2->dst_y);
   xcb_disconnect(connection);
+	free(event);
+	free(trans1);
+	free(trans2);
   return 0;
 }
