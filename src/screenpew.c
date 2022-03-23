@@ -164,8 +164,5 @@ int main() {
 	);
   get_image(connection, root, trans1->dst_x, trans1->dst_y, trans2->dst_x, trans2->dst_y);
   xcb_disconnect(connection);
-	free(event);
-	free(trans1);
-	free(trans2);
   return 0;
 }
