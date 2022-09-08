@@ -1,2 +1,4 @@
 **/*.out
 **/*.png
+.ccls-cache/
+screenpew
