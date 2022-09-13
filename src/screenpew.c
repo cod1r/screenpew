@@ -76,7 +76,7 @@ void add_mouse_event(xcb_connection_t *connection, xcb_window_t window) {
 }
 
 int main() {
-	sleep(.5);
+	sleep(1);
   xcb_connection_t *connection = xcb_connect(NULL, NULL);
   const xcb_setup_t *setup = xcb_get_setup(connection);
 
